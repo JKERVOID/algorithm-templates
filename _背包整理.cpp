@@ -13,12 +13,9 @@ ll _01pack(int n, int m, int v[], ll w[]){
             if(j>=v[i])
                 f[i][j]=max(f[i][j],f[i-1][j-v[i]]+w[i]);
         }
-        */
-        //rollback:
+        *///rollback:
         for(int j=m;j>=v[i];j--)
             f[j]=max(f[j],f[j-v[i]]+w[i]); 
-        
-     
     }
     return f[m];
 }
@@ -36,8 +33,8 @@ ll fullpack(int n, int m, int v[], ll w[]){
             f[j]=max(f[j],f[j-v[i]]+w[i]);
     return f[m];
 }
-//多重背包
-ll multipack(int n, int m, int v[], ll w[], int s[]){
+//二进制优化多重背包
+ll binary_multipack(int n, int m, int v[], ll w[], int s[]){
     /*
     当f[i,j-v]已经使用了s个物品时,f[i,j]不能由f[i-1,j-v]+w转移而来
     f[i,j]=max(f[i-1,j-kv]+kw),k∈[0,s[i]]
@@ -63,7 +60,14 @@ ll multipack(int n, int m, int v[], ll w[], int s[]){
     n=cnt;
     return _01pack(n,m,v,w);
 }
-
+//单调队列优化多重背包
+ll mono_multipack(int n, int m, int v[], ll w[], int s[]){
+    /*
+    f[i,j]=max(f[i-1,j-kv]+kw),k∈[0,s[i]]
+    not finish!
+    */
+    //badcase: f[i,j]=max(f[i-1,j-kv]+kw),k∈[0,s[i]]
+};
 
 int main(){
     const int N=25000;
@@ -74,7 +78,7 @@ int main(){
     for(int i=1;i<=n;i++){
         cin >> v[i] >>w[i]>>s[i];
     }
-    cout<<multipack(n,m,v,w,s);
+    
 }
 
 
