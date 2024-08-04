@@ -2,10 +2,12 @@
 #define ll long long
 
 using namespace std;
+/*
+应用：f(i)表示a[i]右边第一个比它大的数的下标
+时间复杂度：O(n)
+原理：对于ai>=aj且i<j,那么aj一定不会是目标
+*/
 
-//应用：f(i)表示a[i]右边第一个比它大的数的下标
-//时间复杂度：O(n)
-//原理：对于ai>=aj且i<j,那么aj一定不会是目标
 
 
 void mono_stk(int a[],int n,int f[]){

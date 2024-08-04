@@ -2,11 +2,12 @@
 #define ll long long
 using namespace std;
 
-//求最长上升子序列
-//时间复杂度：O(nlogn)
-//原理：长度更短的序列结尾值也更大则没有意义，记录
-//https://www.luogu.com.cn/problem/P1020
-
+/*
+问题：求最长上升子序列
+时间复杂度：O(nlogn)
+原理：长度更短的序列结尾值也更大则没有意义，记录
+https://www.luogu.com.cn/problem/P1020
+*/
 int binary_search2(int l, int r,std::function<bool(int)> check){
     //找左半边的边界
     while(l < r){

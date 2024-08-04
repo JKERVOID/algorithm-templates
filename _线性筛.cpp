@@ -6,7 +6,7 @@ const int pN = 1e5+7;
 
 std::vector<int> primes;
 std::vector<bool> is_prime(pN + 1, true);
-std::vector<int> min_factor(pN + 1);
+std::vector<int> min_factor(pN + 1);//最小质因子
 
 inline void get_primes(int n) {//n以内的素数
     is_prime[0] = is_prime[1] = false;

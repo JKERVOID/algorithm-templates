@@ -2,10 +2,11 @@
 #define ll long long
 
 using namespace std;
-
-//应用:滑动窗口最大值,滑动窗口最小值
-//时间复杂度:O(n)
-//原理：队列尾部元素小于待加入的值,则弹出,因为永远没机会出线了
+/*
+应用:滑动窗口最大值,滑动窗口最小值
+时间复杂度:O(n)
+原理：队列尾部元素小于待加入的值,则弹出,因为永远没机会出线了
+*/
 
 void mono_que(int a[],int n,int k,int fmax[],int fmin[]){
     int que[n+1],head=0,tail=-1;
