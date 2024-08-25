@@ -2,7 +2,7 @@
 using namespace std;
 #define ll long long
 
-//归并排序可顺带求逆序对
+//快排和归并，归并排序返回逆序对数量
 int n;
 void quick_sort(int q[],int l=1,int r=n){
     if(l>=r) return;
@@ -39,7 +39,7 @@ ll merge_sort(int q[],int l=1,int r=n){
     for(int i=l,j=0;i<=r;i++,j++) q[i]=tmp[j];
     return res;
 }
-/*
+
 int main(){
     //https://www.luogu.com.cn/problem/P1177
     std::ios::sync_with_stdio(false);
@@ -50,8 +50,8 @@ int main(){
     merge_sort(q);
     for(int i=1;i<=n;i++) cout<<q[i]<<" ";
     return 0;
-}*/
-
+}
+/*
 int main(){
     //https://www.luogu.com.cn/record/174705434
     std::ios::sync_with_stdio(false);
@@ -62,4 +62,4 @@ int main(){
     for(int i=1;i<=n;i++) cin>>q[i];
     cout<<merge_sort(q)<<endl;
     
-}
+}*/
