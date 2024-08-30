@@ -4,27 +4,31 @@ using namespace std;
 
 //ST表,可以作为倍增模版
 
-const int N=1e5+5;
+const int N=1e5+15;
 const int M=17;//M=log2(N)+1,包括0
 ll w[N];//原数组
-int n;
 
 struct ST{
+    int _n;
     ll lo2[N];//预处理log更快
     ll _st[N][M];//跳表
     function<ll(ll,ll)>_tr = [](ll a,ll b){
         //2^(j-1)区间到2^j区间的转移函数
         return max(a,b);
     };
-    explicit ST(){
+    explicit ST(int n, ll _w[]):_n(n){
+        //初始化ST表
+        //lo2[i]表示i的二进制长度
+        //st[i][j]表示从i开始的2^j长度的区间
+
         //初始化log函数
         lo2[1]=0;
-        for(int i=2;i<=n;i++)lo2[i]=lo2[i>>1]+1;
+        for(int i=2;i<=_n;i++)lo2[i]=lo2[i>>1]+1;
 
         //初始化跳表
-        for(int j=0;j<=lo2[n];j++)//区间长度=1<<j
-            for(int i=1; i+(1<<j)-1<=n; i++){
-                if(!j)_st[i][j]=w[i];
+        for(int j=0;j<=lo2[_n];j++)//区间长度=1<<j
+            for(int i=1; i+(1<<j)-1<=_n; i++){
+                if(!j)_st[i][j]=_w[i];
                 else _st[i][j]=_tr(_st[i][j-1],_st[i+(1<<(j-1))][j-1]);
             }
     }
@@ -41,10 +45,10 @@ struct ST{
 signed main(){
     std::ios::sync_with_stdio(false);
     cin.tie(0);cout.tie(0);
-    int m;
+    int m,n;
     cin>>n>>m;
     for(int i=1;i<=n;i++)cin>>w[i];
-    ST st;
+    ST st(n,w);
     int l,r;
 
     while(m--){
