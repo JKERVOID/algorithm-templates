@@ -34,7 +34,7 @@ inline void get_primes(int n) {//n以内的素数
 }
 
 inline void get_factors(ll l, ll r, vector<pair<ll,int>> fac[]) {
-    //区间筛，找出区间[l,r]的所有质因子，按r+1-i的顺序存入fac[i]中
+    //区间筛，找出区间[l,r]的所有数的质因子，按r+1-i的顺序存入fac[i]中
     int len = r-l+1;
     vector<ll>num(len+1);
     
