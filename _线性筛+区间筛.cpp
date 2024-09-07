@@ -1,4 +1,5 @@
 #include<bits/stdc++.h>
+#define ll long long
 using namespace std;
 
 
@@ -30,6 +31,34 @@ inline void get_primes(int n) {//n以内的素数
         }
     }
 
+}
+
+inline void get_factors(ll l, ll r, vector<pair<ll,int>> fac[]) {
+    //区间筛，找出区间[l,r]的所有质因子，按r+1-i的顺序存入fac[i]中
+    int len = r-l+1;
+    vector<ll>num(len+1);
+    
+    for(int i=1;i<=len;++i){
+        num[i]=r-i+1;
+    }
+    
+    for(auto i: primes){
+        if(i*i>r)break;
+        ll k=r%i+1;//如果i<=len说明区间内存在至少两个i的倍数
+        if(k>len)continue;//k<=len说明区间内至少一个i的倍数
+        for(int j=k;j<=len;j+=i){
+            fac[j].push_back({i,0});
+            //如果只需判断是否是素数，可以省略下一步
+            while(num[j]%i==0){
+                fac[j].back().second++;
+                num[j]/=i;
+            }
+        }
+    }
+    for(int i=1;i<=len;i++){
+        //如需判断素数:if(num[i]==r+1-i)is_big_prime[r-i+1]=true;
+        if(num[i]!=1)fac[i].push_back({num[i],1});
+    }
 }
 
 int main(){
