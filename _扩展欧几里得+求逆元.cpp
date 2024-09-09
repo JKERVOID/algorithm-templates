@@ -9,6 +9,12 @@ std::tuple<ll,ll,ll> exgcd(ll a,ll b){
     return make_tuple(d,y-(b/a)*x,x);
 }
 
+/*
+求解线性同余方程ax≡r(mod m)时：
+1、转化为ax+my=r
+2、设g=gcd(a,m),若r%m==0则有解,反之必定无解
+3、转化为a(xg/r)+m(mg/r)=g即可
+*/
 
 //求逆元
 ll inv(ll a,ll p){ 

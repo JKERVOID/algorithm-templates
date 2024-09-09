@@ -3,15 +3,19 @@ using namespace std;
 #define ll long long
 
 /*
-phi[n]表示1-n中与n互质的数的个数
+φ[n]表示1-n中与n互质的数的个数
 如果n=p1^a1*p2^a2*...*pk^ak
-则phi[n]=n*(1-1/p1)*(1-1/p2)*...*(1-1/pk)
+则φ[n]=n*(1-1/p1)*(1-1/p2)*...*(1-1/pk)
 证明：
-    phi[n]= N - ∑N/pi + ∑N/(pi*pj)-...+...-...+...-∑N/(pi*pj*...*pk)
+    φ[n]= N - ∑N/pi + ∑N/(pi*pj)-...+...-...+...-∑N/(pi*pj*...*pk)
     上式与表达式展开式完全一致
 以上除号均为整除，向下取整
 */
 
+/*
+欧拉定理：若a与m互质，那么a^φ(m)≡1(mod m)
+证明思路：{a^pi}≡{pj},其中{i}与{j}是1到φ(m)的不同排列
+*/
 //欧拉函数，时间复杂度O(sqrt(n))
 int euler_phi(int n){
     int res =n;
