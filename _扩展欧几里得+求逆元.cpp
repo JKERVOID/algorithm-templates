@@ -18,7 +18,6 @@ std::tuple<ll,ll,ll> exgcd(ll a,ll b){
 
 //求逆元
 ll inv(ll a,ll p){ 
-    
     //a与p不满足互质时输出-1，无逆元
     //注意p原则上不能为0、1
     auto[d,x,y]=exgcd(a,p);

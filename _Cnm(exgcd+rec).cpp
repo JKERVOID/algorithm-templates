@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 #define ll long long
-//采用递归实现+扩展欧几里得法，最坏时间复杂度O(nmlogp),最好O(nlogp)
+//采用递归实现+求逆公式法，最坏时间复杂度O(nmlogp),最好O(nlogp)
 
 
 //扩展欧几里得
