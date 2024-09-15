@@ -1,7 +1,13 @@
 #include<bits/stdc++.h>
 using namespace std;
 #define ll long long
-//采用递归实现+求逆公式法，最坏时间复杂度O(nmlogp),最好O(nlogp)
+/*
+求组合数：
+1、纯递归预处理N^2
+2、预处理阶乘：p是质数，NlogN
+3、公式法直接算：NlogN
+4、lucas: plogN
+*/
 
 
 //扩展欧几里得
@@ -21,7 +27,7 @@ inline ll binpow(ll a, ll b) {
     return res;
 }
 //求逆元
-ll inv(ll a,ll p){ 
+inline ll inv(ll a,ll p){ 
     //a与p不满足互质时输出-1，无逆元
     //注意p原则上不能为0、1
     auto[d,x,y]=exgcd(a,p);
@@ -48,17 +54,26 @@ ll Cnm(ll n,ll m,ll p){
     ll numerator=fac(n,p);
     return numerator*inv_denominator%p;
 }
-//Cnm取模,纯递归
-ll Cnm_rec(ll n,ll m,ll p=1e9+7){
-    if(n==m || m==0)return 1;
-    if(n-m<m)m=n-m;
-    if(n%m==0)return n/m * Cnm_rec(n-1,m-1,p)%p;
-    return(Cnm_rec(n-1,m-1,p)+Cnm_rec(n-1,m,p))%p;
+/*
+Cnm取模
+c[a][b]=c[a-1][b]+c[a-1][b-1]
+*/
+void Cnm_rec(ll _N,vector<vector<ll>> &_c,ll _p=1e9+7){
+    for(int i=0; i<=_N; i++)
+        for(int j=0; j<=i; j++)
+            if(j) _c[i][j] = (_c[i-1][j]+_c[i-1][j-1])%_p;
+            else  _c[i][j] = 0;
 }
 
 int main(){
-    ll n,m,p;
-    while(cin>>n>>m>>p){
-        cout<<Cnm_rec(n,m,p)<<endl;
+    ll n,p;
+    n=200, p=1e9+7;
+    vector<vector<ll>>c(n+1);
+    for(int i=1;i<=n;i++)c[i].resize(i+1);
+    Cnm_rec(n,c,p);
+    for(auto i:c){
+        for(auto j:i){
+            cout<<j<<" ";
+        }cout<<endl;
     }
 }
