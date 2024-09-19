@@ -48,6 +48,7 @@ class SegTree{
             ll mid=(l+r)>>1;
             ll res=0;
             push_down(i,l,r);
+            //以求和为例
             if(ql<=mid)res+=query(ls(i),l,mid,ql,qr);
             if(qr>mid)res+=query(rs(i),mid+1,r,ql,qr);
             return res;
@@ -60,7 +61,7 @@ class SegTree{
             push_up(i);
         }
 
-        explicit SegTree(ll size):n(size+1),tree((size+1)<<2),tag((size+1)<<2,0){
+        explicit SegTree(ll size):n(size),tree((size+1)<<2),tag((size+1)<<2,0){
             build(1,1,n);
         };
         //重载函数以简化使用

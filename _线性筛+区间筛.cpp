@@ -2,17 +2,14 @@
 #define ll long long
 using namespace std;
 
+typedef std::vector<int> _vi;
+typedef std::vector<bool> _vb;
+inline void get_primes(_vi &primes,_vi &min_factor,_vb &is_prime,int n) {//n以内的素数
+    min_factor.resize(n+1);
+    min_factor[0] = 0;min_factor[1] = 1;
 
-const int pN = 1e5+7;
-
-std::vector<int> primes;
-std::vector<bool> is_prime(pN + 1, true);
-std::vector<int> min_factor(pN + 1);//最小质因子
-
-inline void get_primes(int n) {//n以内的素数
+    is_prime.resize(n+1,true);
     is_prime[0] = is_prime[1] = false;
-    min_factor[0] = 0;
-    min_factor[1] = 1;
 
     for (int i = 2; i <= n; ++i) {
         if (is_prime[i]) {
@@ -33,7 +30,7 @@ inline void get_primes(int n) {//n以内的素数
 
 }
 
-inline void get_factors(ll l, ll r, vector<pair<ll,int>> fac[]) {
+inline void get_factors(ll l, ll r,_vi &primes, vector<pair<ll,int>> fac[]) {
     //区间筛，找出区间[l,r]的所有数的质因子，按r+1-i的顺序存入fac[i]中
     int len = r-l+1;
     vector<ll>num(len+1);
@@ -62,7 +59,9 @@ inline void get_factors(ll l, ll r, vector<pair<ll,int>> fac[]) {
 }
 
 int main(){
-    get_primes(100);
+    _vi primes,min_factor;
+    _vb is_prime;
+    get_primes(primes,min_factor,is_prime,100);
     for (int i = 0; i < primes.size(); ++i) {
         cout << primes[i] << " ";
     }cout<<endl;
