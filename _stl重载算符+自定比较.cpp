@@ -2,17 +2,20 @@
 using namespace std;
 #define ll long long
 
-//优先队列
-struct p_MyStruct {
-    int value;
-    double priority;
-    // 构造函数
-    p_MyStruct(int v, double pr) : value(v), priority(pr) {}
-    // 重载小于运算符，定义优先队列中的顺序
-    bool operator<(const p_MyStruct &other) const {//类内重载该运算符隐式传入了this
-        return priority < other.priority;
+//优先队列(大根堆)
+typedef std::pair<int, ll> PIL;
+priority_queue<PIL, vector<PIL>, function<bool(PIL, PIL)>> 
+    pq_max([](const PIL& a, const PIL& b) 
+        {return a.second < b.second;}
+    );
+
+struct PII{int l,r;};
+struct Compare {
+    bool operator()(const PII& a, const PII& b) {
+        return a.r > b.r; 
+        // 若 a.r 大于 b.r，则 a 在堆中的位置应该比 b 低
     }
-};priority_queue<p_MyStruct> pq_max;// 创建一个默认的优先队列（最大值优先）
+};priority_queue<PII, std::vector<PII>, Compare> pq;
 
 //双关键字map
 struct m_ComparePair {
