@@ -38,6 +38,25 @@ void bellmanford(vector<ll> &dis, vector<TIIL> &edges, int _n, int s=1,int k=-1)
     //所以到达不了的边应使用dis[v]>=INF/2来判断
 }
 
+//判断负环
+bool bellmanford_judge(vector<ll> &dis, vector<TIIL> &edges, int _n, int s=1){
+    //1.
+    dis.resize(_n+1, INF);
+    dis[s]=0;
+    //2.
+    for(int i=1;i<=_n;i++){
+        vector<ll>prev(dis);//防止更新顺序影响其他边的更新
+        for(auto [u,v,w]:edges){
+            if(dis[v]<=INF/2){
+                //使得只判断从s能到达的负环，若不加，则判断全图是否存在负环
+                if(i==_n && dis[v]>prev[u]+w)return true;
+            }
+            dis[v]=min(dis[v], prev[u]+w);
+        }
+    }
+    return false;
+}
+
 /*
 优化bellman-ford：SPFA
 复杂度：最坏O(nm)
@@ -52,13 +71,9 @@ void bellmanford(vector<ll> &dis, vector<TIIL> &edges, int _n, int s=1,int k=-1)
 原理：相较于BF，SPFA只会更新有可能被更新的点，因此复杂度更低
 特点：
     1. 可以处理负权边
-    2. 可以判断负环(当第n次仍存在被更新的点时，存在负环)
-    3. 可以处理包含特定点数量的最短路
-    4. 对边的存储方式没有要求
+    2. 可以判断负环(记录一下当前点到a需经过几个点，若超出n-1个则存在负环)
+    3. 要求存储方式为邻接表
 */
-
-
-
 
 struct SPFA{
     typedef pair<ll,int>PLI;
