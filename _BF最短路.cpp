@@ -47,10 +47,8 @@ bool bellmanford_judge(vector<ll> &dis, vector<TIIL> &edges, int _n, int s=1){
     for(int i=1;i<=_n;i++){
         vector<ll>prev(dis);//防止更新顺序影响其他边的更新
         for(auto [u,v,w]:edges){
-            if(dis[v]<=INF/2){
-                //使得只判断从s能到达的负环，若不加，则判断全图是否存在负环
+            if(dis[v]<=INF/2)//使得只判断从s能到达的负环，若不加，则判断全图是否存在负环
                 if(i==_n && dis[v]>prev[u]+w)return true;
-            }
             dis[v]=min(dis[v], prev[u]+w);
         }
     }
