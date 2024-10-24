@@ -57,7 +57,7 @@ bool bellmanford_judge(vector<ll> &dis, vector<TIIL> &edges, int _n, int s=1){
 
 /*
 优化bellman-ford：SPFA
-复杂度：最坏O(nm)
+复杂度：O(nm), 平均随机复杂度接近nlogm
 步骤：
     1. dis[j]=INF, dis[2]=0;
     2. st[j]=0, st[1]=1, st数组用于防止队列中出现重复点
