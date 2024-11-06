@@ -19,13 +19,13 @@ using ll =long long;
 1、寻找存未匹配边出发,从另一匹配边结尾的，由匹配边未匹配边交替出现构成的交错路
 2、如果找得到，那么交错路上所有未匹配边变为匹配边，匹配边变成未匹配边即可增加一对点
 [*特别说明]：
-    könig定理：对于二分图, 最大匹配==最小点覆盖(用最少的点覆盖所有的边)
+    könig定理：对于二分图, 最大匹配==最小点覆盖(用最少的点覆盖所有的边)==n-最小边覆盖
     另有复杂度更低的网络流做法解决此问题
 */
 
 class Hungarian{
 public:
-    vector<vector<int>>edge;
+    vector<vector<int>>&edge;
     vector<int>match;
     vector<bool>st;
     int n,m,cnt=0;
