@@ -3,83 +3,100 @@ typedef long long ll;
 
 //线段树
 using namespace std;
-const int N=1e6+10;
-ll a[N];
-class SegTree{
-    public:
-        ll n;
-        vector<ll> tree,tag;
+const int N=1e5+113;
+ll w[N];
+class SegTree{//以求和为例
+public:
+    struct Node{
+        int l,r;ll sum;
+        ll tag;
+    };vector<Node>tree;
 
-        inline ll ls(ll i){return i<<1;}
-        inline ll rs(ll i){return i<<1|1;}
-        void push_up(ll i){
-            //以求和为例
-            tree[i]=tree[ls(i)]+tree[rs(i)];
-        }
-        //void push_up_min(ll x){tree[x]=min(tree[ls(x)],tree[rs(x)]);}
+    int n;
 
-        inline void change(ll i,ll l,ll r,ll k){
-            //以求和为例
-            tag[i]=tag[i]+k;
-            tree[i]=tree[i]+k*(r-l+1);
+    inline int ls(int i){return i<<1;}
+    inline int rs(int i){return i<<1|1;}
+
+    void push_up(int i){
+        //向上一层更新sum
+        auto &[l,r,sum,tag]=tree[i];
+        sum = tree[ls(i)].sum + tree[rs(i)].sum;
+    }
+
+    inline void change(int i,ll d){
+        //避免重复，此函数用于处理tag传递到本层带来的修改
+        auto &[l,r,sum,tag]=tree[i];
+        tag += d;
+        sum += d*(r-l+1);
+    }
+
+    inline void push_down(int i){
+        //向下一层传递tag
+        auto &[l,r,sum,tag]=tree[i];
+        if(tag){
+            change(ls(i),tag);
+            change(rs(i),tag);
+            tag=0;
         }
-        inline void push_down(ll i,ll l,ll r){
-            if(tag[i]){
-                ll mid=(l+r)>>1;
-                change(ls(i),l,mid,tag[i]);
-                change(rs(i),mid+1,r,tag[i]);
-                tag[i]=0;
-            }
-        }
-        void update(ll i,ll l,ll r,ll ql,ll qr,ll k){
-            //以求和为例
-            if(ql<=l&&r<=qr){
-                change(i,l,r,k);
-                return;
-            }
-            push_down(i,l,r);
-            ll mid=(l+r)>>1;
-            if(ql<=mid)update(ls(i),l,mid,ql,qr,k);
-            if(qr>mid)update(rs(i),mid+1,r,ql,qr,k);
-            push_up(i);
-        }
-        ll query(ll i,ll l,ll r,ll ql,ll qr){
-            if(ql<=l&&r<=qr)return tree[i];
-            ll mid=(l+r)>>1;
-            ll res=0;
-            push_down(i,l,r);
-            //以求和为例
-            if(ql<=mid)res+=query(ls(i),l,mid,ql,qr);
-            if(qr>mid)res+=query(rs(i),mid+1,r,ql,qr);
-            return res;
-        }
-        void build(ll i,ll l,ll r){
-            if(l==r){tree[i]=a[l];return;}
-            ll mid=(l+r)>>1;
-            build(ls(i),l,mid);
-            build(rs(i),mid+1,r);
-            push_up(i);
+    }
+
+    void update(int i,int l,int r,ll d){
+        //以求和为例
+        if(l<=tree[i].l && tree[i].r<=r){
+            change(i,d);
+            return;
         }
 
-        explicit SegTree(ll size):n(size),tree((size+1)<<2),tag((size+1)<<2,0){
-            build(1,1,n);
-        };
-        //重载函数以简化使用
-        ll query(ll l,ll r){return query(1,1,n,l,r);}
-        void update(ll l,ll r,ll k){update(1,1,n,l,r,k);}
+        push_down(i);//标记需要分裂
+        int mid=(tree[i].l+tree[i].r)>>1;
+        if(l<=mid)update(ls(i),l,r,d);
+        if(r>mid)update(rs(i),l,r,d);
+        push_up(i);//更新sum
+    }
+
+    ll query(int i,int l,int r){
+        if(l<=tree[i].l && tree[i].r<=r) return tree[i].sum;
+        int mid=(tree[i].l+tree[i].r)>>1;
+        ll res=0;
+        push_down(i);//涉及分裂则需要push_down
+        //划分成[l,mid],[mid+1,r]
+        if(l<=mid)res+=query(ls(i),l,r);
+        if(r>mid)res+=query(rs(i),l,r);
+        return res;
+    }
+
+    void build(int i,int l,int r){
+        if(l==r){
+            tree[i]={l,r,w[r],0};
+            return;
+        }
+        tree[i]={l,r,0,0};
+        int mid=(tree[i].l+tree[i].r)>>1;
+        build(ls(i),l,mid);
+        build(rs(i),mid+1,r);
+        push_up(i);
+    }
+
+    explicit SegTree(int size):n(size),tree((size+1)<<2){
+        build(1,1,n);
+    };
+    //重载函数以简化使用
+    ll query(int l,int r){return query(1,l,r);}
+    void update(int l,int r,ll d){update(1,l,r,d);}
 };
 
+//https://www.luogu.com.cn/record/210242245
 
 int main(){
     int n,q;
     cin >> n>>q;
-    for(int i=1;i<=n;i++)cin >> a[i];
+    for(int i=1;i<=n;i++)cin >> w[i];
     SegTree seg(n);
-    int op,x,y,k;
+    ll op,x,y,k;
     while(q--){
         cin >> op>>x>>y;
         if(op==1){
-            cin >> k;
+            cin >> k; 
             seg.update(x,y,k);
         }else{
             cout << seg.query(x,y) << endl;

@@ -6,6 +6,8 @@ using ll = long long ;
 
 //https://www.luogu.com.cn/problem/P3374
 //如需解决区间修改单点查询，可以考虑结合差分数组
+//memset不要忘记，数组从1开始
+
 const int N=5e5+13;
 int tr[N];
 int n;
@@ -13,7 +15,7 @@ int n;
 int lowbit(int x){
     return x&-x;//-x=~x+1
 }
-int add(int x, int num){
+void add(int x, int num){
     //修改后会影响到的tr[i]如下
     for(int i=x;i<=n;i+=lowbit(i))tr[i]+=num;
 }
