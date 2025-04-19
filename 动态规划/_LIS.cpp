@@ -5,7 +5,7 @@ using namespace std;
 /*
 问题：求最长上升子序列
 时间复杂度：O(nlogn)
-原理：长度更短的序列结尾值也更大则没有意义，记录
+原理：长度更短的序列结尾值也更大则没有意义，记录长度为i的序列的最小结尾值为q[i],找到对a[i]可以替换的值
 https://www.luogu.com.cn/problem/P1020
 */
 int binary_search2(int l, int r,std::function<bool(int)> check){
