@@ -13,7 +13,8 @@ ll _01pack(int n, int m, int v[], ll w[]){
             if(j>=v[i])
                 f[i][j]=max(f[i][j],f[i-1][j-v[i]]+w[i]);
         }
-        *///rollback:
+        */
+        //rollback:
         for(int j=m;j>=v[i];j--)
             f[j]=max(f[j],f[j-v[i]]+w[i]); 
     }
