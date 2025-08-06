@@ -69,7 +69,7 @@ public:
 
     ll query(int x){return dis[x]==INF?-1:dis[x];}
 
-    vector<int> route(int x){
+    vector<int>& route(int x){
         //查询路径
         vector<int> ro;
         if(query(x)==-1)return ro;
@@ -89,11 +89,11 @@ public:
 单源正权最短路，O(nlogm)
 步骤：
     1、dis[i]=INF，dis[1]=0,
-    2、初始化已确定最短距离的set,set.empty()
+    2、初始化已确定最短距离的vis
     3、初始化一个堆heap，存储4.c更新出的{dis[j],j}
     4、循环n次：(每次循环可以确定一个点的最短路)
         a. 用heap找到不在s中的距离源最近的点:O(1)
-        b. s.insert(t):O(1)
+        b. vis[t]=1
         c. 遍历与t相邻的点，以更新其他点,
             检查是否存在dis[x]>g[x][t]+dis[t]
            (此步骤用邻接表相当于检查所有边:O(m)
@@ -108,7 +108,7 @@ struct Dij_heap{
     typedef pair<ll,int>PLI;
     vector<vector<PLI>>edge;
     vector<ll>dis;
-    vector<bool>st;
+    vector<bool>vis;
     vector<int>fa;
     priority_queue<PLI, vector<PLI>, greater<PLI>> heap;
     int _n,_m,s;
@@ -116,7 +116,7 @@ struct Dij_heap{
         //1.2.3.
         edge.resize(_n+1);
         dis.resize(_n+1,INF);
-        st.resize(_n+1,0);
+        vis.resize(_n+1,0);
         fa.resize(_n+1,-1);
         dis[s]=0;
         heap.push({0,s});
@@ -137,9 +137,9 @@ struct Dij_heap{
             //a
             int t=heap.top().second;
             heap.pop();
-            if(st[t])continue;
+            if(vis[t])continue;
             //b
-            st[t]=1;
+            vis[t]=1;
             //c
             for(auto [w,j]:edge[t]){
                 if(dis[j] > dis[t] + w){
@@ -152,7 +152,7 @@ struct Dij_heap{
     }
     ll query(int x){return dis[x]==INF?-1:dis[x];}
 
-    vector<int> route(int x){
+    vector<int>& route(int x){
         //查询路径
         vector<int> ro;
         if(query(x)==-1)return ro;
