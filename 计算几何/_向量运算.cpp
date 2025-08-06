@@ -3,42 +3,72 @@ using namespace std;
 
 using ll =long long;
 
-class Point{
+const double pi=acos(-1);
+const double eps=1e-8;
+
+class P{
 public: 
     double x,y;
-    Point(double _x,double _y):x(_x),y(_y){};
+    P(double _x=0,double _y=0):x(_x),y(_y){};
 
     std::ostream& operator<<(std::ostream& os){
         os<<'('<<x<<','<<y<<")";
         return os;
     }
-    Point operator+(Point o)const{
-        return Point(x+o.x,y+o.y);
+    P operator+(P _o)const{
+        return P(x+_o.x,y+_o.y);
     } 
-    Point operator-(Point o)const{
-        return Point(x-o.x,y-o.y);
+    P operator-(P _o)const{
+        return P(x-_o.x,y-_o.y);
     }
-    friend Point operator*(double num,Point &self){
+    friend P operator*(double num,P &self){
         //数乘：此写法只允许左乘数字
-        return Point(num*self.x,num*self.y);
+        return P(num*self.x,num*self.y);
     }
-    friend double dot(Point _a, Point _b){
+    double operator*(P _o)const{
+        //叉积：=|a||b|sinθ (平行四边形的有向面积)
+        //o在*this逆时针方向(左侧)为正
+        return x*_o.y-y*_o.x;
+    }
+
+    friend double dot(P _a, P _b){
         //点乘：=|a||b|cosθ
         return _a.x*_b.x+_a.y*_b.y;
     }
     double len(){
         return sqrt(x*x+y*y);
     }
-    friend double angle(Point a,Point b){
+    friend double angle(P a,P b){
+        //起始点为a,终点为b
+        if(a*b>-eps)
         //夹角：无方向，小于等于平角
-        return acos(dot(a,b)/a.len()/b.len());
+            return acos(dot(a,b)/a.len()/b.len());
+        else 
+            return 2*pi-acos(dot(a,b)/a.len()/b.len());
     } 
-    double cross(Point o)const{
-        //叉积：=|a||b|sinθ (平行四边形的有向面积)
-        //o在*this逆时针方向(左侧)为正
-        return x*o.y-y*o.x;
+
+    double get_aph(){
+        //计算与x轴的夹角
+        return angle(P(1,0),*this);
     }
-
-
+    
 };
 
+bool on_left(P _p, P _va,P _vb){
+    //判断点是否在向量左侧
+    return (_p-_va)*(_vb-_va)>0;
+}
+
+bool is_cross(P _va,P _vb, P _ua, P _ub){
+    //判断两线段是否有交点
+    return on_left(_va,_ua,_ub)^on_left(_vb,_ua,_ub);
+}
+
+P getNode(P _a,P _u, P _b,P _v){
+/*
+    求两条直线的交点
+    需转化成点向式直线，即a代表起点，u代表a为起点的向量
+*/
+    double _t=(_a-_b)*_v/(_v*_u);
+    return _a+_t*_u;
+}
