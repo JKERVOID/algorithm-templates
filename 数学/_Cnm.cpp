@@ -19,7 +19,7 @@ void Cnm_rec(ll _N,vector<vector<ll>> &_c,ll _p=1e9+7){
     for(int i=0; i<=_N; i++)
         for(int j=0; j<=i; j++)
             if(j) _c[i][j] = (_c[i-1][j]+_c[i-1][j-1])%_p;
-            else  _c[i][j] = 0;
+            else  _c[i][j] = 1;
 }
 
 //算法2：
