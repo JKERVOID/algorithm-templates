@@ -15,7 +15,14 @@ using namespace std;
 /*
 欧拉定理：若a与m互质，那么a^φ(m)≡1(mod m)
 证明思路：{a^pi}≡{pj},其中{i}与{j}是1到φ(m)的不同排列
+
+扩展欧拉定理: (欧拉降幂)
+a^b(mod m) = 
+    b <  φ(m),  a^b
+    b >= φ(m),  a ^ ( b mod φ(m) + φ(m) )
+    注:两种情况不能合并
 */
+
 //欧拉函数，时间复杂度O(sqrt(n))
 int euler_phi(int n){
     int res = n;
