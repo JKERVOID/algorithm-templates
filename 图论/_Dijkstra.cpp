@@ -59,6 +59,7 @@ public:
             st[t]=1;
             //c
             for(int j=1;j<=_n;j++){
+                if(st[j])continue;
                 if(dis[j]>dis[t]+edge[t][j]){
                     dis[j]=dis[t]+edge[t][j];
                     fa[j]=t;//处理路径

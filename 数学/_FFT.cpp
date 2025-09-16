@@ -79,6 +79,7 @@ public:
     C operator*(C _o)const {return C(x*_o.x - y*_o.y, x*_o.y + y*_o.x);}
 
 };
+
 vector<int> rev;//i的二进制逆序后的值
 void FFT(vector<C>&A, int n, int op=1){
     /*
@@ -88,9 +89,8 @@ void FFT(vector<C>&A, int n, int op=1){
         最终A返回多项式的点值表达式
     */
     A.resize(n);
-    for(int i=0;i<n;++i){
+    for(int i=0;i<n;++i)
         if(i<rev[i])swap(A[i],A[rev[i]]);
-    }
 
     for(int m=2;m<=n;m<<=1){//枚举块宽
         C w1(cos(2*PI/m),sin(2*PI/m)*op);
@@ -101,11 +101,10 @@ void FFT(vector<C>&A, int n, int op=1){
                 A[i+j]=x+y, A[i+j+m/2]=x-y;
                 wk=wk*w1;
             }
-
         }
-
     }
 };
+
 void IFFT(vector<C>&A,int n){
     /*
         多项式乘法逆变换
@@ -118,24 +117,23 @@ void IFFT(vector<C>&A,int n){
 };
 
 vector<int> mltp(vector<int>&A_,vector<int>&B_){
-        int n=1,m=A_.size()+B_.size()-1;
-        while(n<=m)n<<=1;//求总点数n
-        rev.resize(n,0);
-        int l = log2(n);
-        for (int i = 1; i < n; i++) {
-            rev[i] = (rev[i >> 1] >> 1) | ((i & 1) << (l - 1));
-        }
-        vector<C>A(n);
-        for(int i=0; i<A_.size(); i++) A[i].x = A_[i];
-        for(int i=0; i<B_.size(); i++) A[i].y = B_[i];
-        FFT(A,n);//求点值
-        for(int i=0;i<n;++i)A[i]=A[i]*A[i];
-        IFFT(A,n);
-        vector<int>ans(m);
-        for(int i=0;i<m;++i)
-            ans[i]=round(A[i].y/2);
-        return ans;
-    };
+    int n=1,m=A_.size()+B_.size()-1;
+    while(n<=m)n<<=1;//求总点数n
+    rev.resize(n,0);
+    for (int i = 1; i < n; i++) {
+        rev[i] = (rev[i >> 1] >> 1) | ((i & 1)?(n>>1):0);
+    }
+    vector<C>A(n);
+    for(int i=0; i<A_.size(); i++) A[i].x = A_[i];
+    for(int i=0; i<B_.size(); i++) A[i].y = B_[i];
+    FFT(A,n);//求点值
+    for(int i=0;i<n;++i)A[i]=A[i]*A[i];
+    IFFT(A,n);
+    vector<int>ans(m);
+    for(int i=0;i<m;++i)
+        ans[i]=round(A[i].y/2);
+    return ans;
+};
 
 
 int main(){
